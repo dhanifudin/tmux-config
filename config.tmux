@@ -3,10 +3,21 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 main() {
+	tmux set -g history-limit 10000
+
+	# Mouse
+	tmux set -g mouse on
+	# Mouse Scrolling
+	tmux bind-key -T root WheelUpPane   if-shell -F -t = "#{alternate_on}" "send-keys -M" "select-pane -t =; copy-mode -e; send-keys -M"
+	tmux bind-key -T root WheelDownPane if-shell -F -t = "#{alternate_on}" "send-keys -M" "select-pane -t =; send-keys -M"
+
+	# Start windows and panes at 1
 	tmux set -g base-index 1
 	tmux setw -g pane-base-index 1
 
+	# Set prefix to Ctrl + Space
 	tmux set -g prefix C-Space
+
 	tmux bind-key '|' split-window -h
 	tmux bind-key - split-window -v
 
